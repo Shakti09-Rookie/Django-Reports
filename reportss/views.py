@@ -4,7 +4,16 @@ from django.http import JsonResponse
 from .utils import get_report_image
 from .models import Report
 from .forms import ReportForm
+from django.views.generic import ListView, DetailView
 # Create your views here.
+
+class ReportListView(ListView):
+    model = Report
+    template_name = "reportss/main.html"
+
+class ReportDetailView(DetailView):
+    model = Report
+    template_name = 'reportss/detail.html'
 
 def is_ajax(request):
     return request.META.get('HTTP_X_REQUESTED_WITH') == 'XMLHttpRequest'
