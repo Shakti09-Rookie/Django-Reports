@@ -11,6 +11,10 @@ from django.http import HttpResponse
 from django.template.loader import get_template
 from xhtml2pdf import pisa
 
+from sales.models import Sale, Position, CSV
+import csv
+from django.utils.dateparse import parse_date
+
 # Create your views here.
 
 class ReportListView(ListView):
@@ -25,6 +29,34 @@ class UploadTemplateView(TemplateView):
     template_name = 'reportss/from_file.html'
 
 def csv_upload_view(request):
+    print("file is here")
+
+    if request.method == 'POST':
+        csv_file = request.FILES.get('file')
+        obj = CSV.objects.create(file_name=csv_file)
+
+
+        with open(obj.file_name.path, 'r') as f:
+            reader = csv.reader(f)
+            # to skip column titles
+            reader.__next__()
+            for row in reader:
+                print(row, type(row))
+                # if data is semicolon separated, then try below operations
+                # data = "".join(row)
+                # print(data, type(data))
+                # data = data.split(',')
+                # print(data, type(data))
+                # If there is a empty column at end
+                # row.pop()
+
+                transaction_id = row[1]
+                product = row[2]
+                quantity = int(row[3])
+                customer = row[4]
+                date = parse_date(row[5])
+
+
     return HttpResponse()
 
 def is_ajax(request):
