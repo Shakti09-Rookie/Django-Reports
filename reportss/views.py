@@ -4,7 +4,7 @@ from django.http import JsonResponse
 from .utils import get_report_image
 from .models import Report
 from .forms import ReportForm
-from django.views.generic import ListView, DetailView
+from django.views.generic import ListView, DetailView, TemplateView
 
 from django.conf import settings
 from django.http import HttpResponse
@@ -20,6 +20,12 @@ class ReportListView(ListView):
 class ReportDetailView(DetailView):
     model = Report
     template_name = 'reportss/detail.html'
+
+class UploadTemplateView(TemplateView):
+    template_name = 'reportss/from_file.html'
+
+def csv_upload_view(request):
+    return HttpResponse()
 
 def is_ajax(request):
     return request.META.get('HTTP_X_REQUESTED_WITH') == 'XMLHttpRequest'

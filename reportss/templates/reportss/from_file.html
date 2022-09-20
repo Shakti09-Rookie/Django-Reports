@@ -1,0 +1,18 @@
+{% extends 'base.html' %}
+
+{% block scripts %}
+
+{% endblock scripts %}
+
+{% block title %}
+Upload Sales Files
+{% endblock title %}
+
+{% block content %}
+    <h5>Upload you Sales document</h5>
+    <br>
+    <form class="dropzone" id="my-dropzone">
+        {% csrf_token %}
+      <input type="file" name="file" />
+    </form>
+{% endblock content %}
