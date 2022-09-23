@@ -16,17 +16,17 @@ def login_view(request):
             password = form.cleaned_data.get('password')
             user = authenticate(username=username, password=password)
             if user is not None:
-                login(user)
+                login(request, user)
                 if request.GET.get('next'):
                     return redirect(request.GET.get('next'))
                 else:
                     return redirect('sales:home')
-            else:
-                error_message = 'Oops, Something went wrong'
+        else:
+            error_message = 'Oops, Something went wrong'
 
-        context = {
-            'form' : form,
-            'error_message' : error_message,
-        }
+    context = {
+        'form' : form,
+        'error_message' : error_message,
+    }
 
-        return render(request, 'auth/login.html', context)
+    return render(request, 'auth/login.html', context)

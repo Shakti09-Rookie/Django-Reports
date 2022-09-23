@@ -17,19 +17,23 @@ from customers.models import Customer
 import csv
 from django.utils.dateparse import parse_date
 
+from django.contrib.auth.decorators import login_required
+from django.contrib.auth.mixins import LoginRequiredMixin
+
 # Create your views here.
 
-class ReportListView(ListView):
+class ReportListView(LoginRequiredMixin, ListView):
     model = Report
     template_name = "reportss/main.html"
 
-class ReportDetailView(DetailView):
+class ReportDetailView(LoginRequiredMixin, DetailView):
     model = Report
     template_name = 'reportss/detail.html'
 
-class UploadTemplateView(TemplateView):
+class UploadTemplateView(LoginRequiredMixin, TemplateView):
     template_name = 'reportss/from_file.html'
 
+@login_required
 def csv_upload_view(request):
     print("file is here")
 
@@ -83,6 +87,7 @@ def csv_upload_view(request):
 def is_ajax(request):
     return request.META.get('HTTP_X_REQUESTED_WITH') == 'XMLHttpRequest'
 
+@login_required
 def create_report_view(request):
     form = ReportForm(request.POST or None)
     if is_ajax(request=request):
@@ -115,6 +120,7 @@ def create_report_view(request):
 #         return JsonResponse({'msg' : 'send'})
 #     return JsonResponse({})
 
+@login_required
 def render_pdf_view(request, pk):
     template_path = 'reportss/pdf.html'
     obj = get_object_or_404(Report, pk=pk)
